@@ -1,0 +1,237 @@
+    DROP TABLE IF EXISTS AUTORI CASCADE;
+    DROP TABLE IF EXISTS VÂNZĂRI CASCADE;
+   DROP TABLE IF EXISTS CĂRTI CASCADE;
+   DROP TABLE IF EXISTS CĂRȚIAUTORI CASCADE;
+   DROP TABLE IF EXISTS CUVINTECHEIE CASCADE;
+    DROP TABLE IF EXISTS CĂRȚICUVINTECHEIE CASCADE;
+   DROP TABLE IF EXISTS EDITURI CASCADE;
+   CREATE TABLE AUTORI
+   (CodAutor INT NOT NULL,
+    NumeAutor VARCHAR (120),
+    DataNasterii DATE,
+    Țara VARCHAR (40),
+    CONSTRAINT PK_AUTORI PRIMARY KEY  (CodAutor)
+    );
+   CREATE TABLE VÂNZĂRI
+   (ISBN INT NOT NULL,
+    AN INT NOT NULL,
+   LUNA INT NOT NULL,
+    VÂNZĂRI VARCHAR (100),
+    CONSTRAINT  PK_VÂNZĂRI PRIMARY KEY(ISBN, AN, LUNA));
+
+    CREATE TABLE CĂRTI
+    (Titlu VARCHAR (50) NOT NULL,
+    ISBN INT NOT NULL,
+    Editura VARCHAR(30),
+    AnApar VARCHAR(20),
+    NrPagini VARCHAR (10),
+    PretActual VARCHAR (25),
+    CONSTRAINT PK_CĂRTI PRIMARY KEY (ISBN)
+    );
+
+    CREATE TABLE CĂRȚIAUTORI
+    (ISBN INT NOT NULL,
+    AutorNr INT NOT NULL,
+   CodAutor INT NOT NULL
+ 	CONSTRAINT FK_CĂRȚIAUTORI REFERENCES AUTORI(CodAutor)
+ 	ON DELETE RESTRICT ON UPDATE CASCADE,
+      CONSTRAINT PK_CĂRȚIAUTORI PRIMARY KEY (ISBN, AutorNr));
+
+    CREATE TABLE CUVINTECHEIE
+    (CodCC INT NOT NULL,
+    NumeCC VARCHAR (25),
+    CodCCSuperior VARCHAR (20),
+    CONSTRAINT PK_CUVINTECHEIE PRIMARY KEY (CodCC));
+
+CREATE TABLE CĂRȚICUVINTECHEIE
+(ISBN INT NOT NULL,
+CodCC INT NOT NULL,
+CONSTRAINT PK_CĂRȚICUVINTECHEIE PRIMARY KEY (ISBN, CodCC));
+
+    CREATE TABLE EDITURI
+    (Editura VARCHAR(255) NOT NULL,
+    Adresa VARCHAR (25),
+    Localit VARCHAR (25),
+     Țara VARCHAR (25),
+     CONSTRAINT PK_EDITURI PRIMARY KEY (Editura)
+     );
+    ALTER TABLE VÂNZĂRI ADD CONSTRAINT FK_ISBN
+        FOREIGN KEY (ISBN) REFERENCES CĂRTI (ISBN) ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ALTER TABLE CĂRȚIAUTORI ADD CONSTRAINT FK_ISBN
+        FOREIGN KEY (ISBN) REFERENCES CĂRTI (ISBN) ON DELETE NO ACTION ON UPDATE NO ACTION;
+   ALTER TABLE CĂRȚICUVINTECHEIE ADD CONSTRAINT FK_ISBN
+       FOREIGN KEY (ISBN) REFERENCES CĂRTI (ISBN) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+     ALTER TABLE CĂRȚICUVINTECHEIE ADD CONSTRAINT FK_CodCC
+        FOREIGN KEY (CodCC) REFERENCES CUVINTECHEIE (CodCC) ON DELETE NO ACTION ON UPDATE NO ACTION;	
+	
+     ALTER TABLE CĂRTI ADD CONSTRAINT FK_Editura
+         FOREIGN KEY (Editura) REFERENCES EDITURI (Editura) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+	INSERT INTO AUTORI (CodAutor, NumeAutor, DataNasterii, Țara) VALUES (1234,'Fatu Tudorel','12.08.1948','Romania');
+	INSERT INTO AUTORI (CodAutor, NumeAutor, DataNasterii, Țara) VALUES (4512,'DAN LUNGU','29.04.1969','Romania');
+	INSERT INTO AUTORI (CodAutor, NumeAutor, DataNasterii, Țara) VALUES (1487,'CIOBANU ANDREI','11.06.1985','Romania');
+       INSERT INTO AUTORI (CodAutor, NumeAutor, DataNasterii, Țara) VALUES (1265,'AGATHA Cristie','01.08.1869','Scotland');
+	INSERT INTO AUTORI (CodAutor, NumeAutor, DataNasterii, Țara) VALUES (1235,'CONSTATIN CUCOS','01.08.1969','Romania');
+	INSERT INTO AUTORI (CodAutor, NumeAutor, DataNasterii, Țara) VALUES (1321,'ADAM SMITH','12.08.1848','ENGLAND');
+	INSERT INTO AUTORI (CodAutor, NumeAutor, DataNasterii, Țara) VALUES (1456,'NEAGU DJUVARA','02.08.1916','Romania');
+       INSERT INTO AUTORI (CodAutor, NumeAutor, DataNasterii, Țara) VALUES (7898,'Tudorica Enache','02.08.1990','Romania');
+INSERT INTO AUTORI (CodAutor, NumeAutor, DataNasterii, Țara) VALUES (1111,'Ion Ionescu','01.01.1922','Romania');
+
+select * from AUTORI
+	
+	
+	
+	INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Graphix','Str.Oituz,2', 'Iasi','Romania');
+	INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Junimea','Str.Unirii', 'Iasi','Romania');
+	INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Humanitas','Str.Carol', 'Iasi','Romania');
+	INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Corola','Str.Oituz,2', 'Iasi','Romania');
+	INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Matrix','Str.Oituz,2', 'Iasi','Romania');
+        INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Polinom','Ion Mihaila', 'Iasi','Romania');
+        INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Calibri','Str.Humulesti', 'Neamt','Romania');
+        INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Tora','Str.Jerusalim', 'Ierusalim','Israel');
+        INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Paralela 45','Str.Arcu', 'Iasi','Romania');
+        INSERT INTO EDITURI (Editura, Adresa, Localit, Țara) VALUES ('Poliedru','Str.Patrascu-Voda', 'Iasi','Romania');
+
+
+  INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Macroeeconomie',173628201, 'Paralela 45',2003,250,60);
+   INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Finante',736282014, 'Matrix',2013,150,35);
+   INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Bazele informaticii economice',973628201, 'Graphix',2012,321,45);
+   INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Baze de date',973128201, 'Poliedru',2017,243,70);
+   INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Cercetari operationale',57362801, 'Graphix',2012,321,45);
+   INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Educatie Antreprenoriala',57362401, 'Calibri',2011,301,55);
+   INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Econometrie',37362801, 'Graphix',2012,500,75);
+   INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Statistica',38362801, 'Tora',2012,100,85);
+   INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Modulul Psihopedagogic',873828201, 'Matrix',2010,250,90);
+  INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Limba engleza',97362801, 'Graphix',2012,321,45);
+  INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( 'Limba franceza',27362401, 'Corola',2001,321,45);
+ INSERT INTO CĂRTI (Titlu, ISBN, Editura,AnApar, NrPagini,PretActual ) VALUES ( '"Limba germana"',27362111, 'Corola',2007,111,111);
+
+
+
+
+
+ 	 INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (173628201, 2, 4512);
+ 	 INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (57362401, 3, 1234);
+ 	 INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (57362401, 4, 1487);
+  	 INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (37362801, 5, 1456);
+  	 INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (38362801, 6, 1321);
+  	 INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (173628201, 7, 1235);
+  	 INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (973128201, 8, 1321);
+   	INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (873828201, 9, 1265);
+   	 INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (736282014, 10, 7898);
+	INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (57362401, 1, 1234);
+	INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (27362111, 11, 1111);
+	INSERT INTO CĂRȚIAUTORI (ISBN,AutorNr, CodAutor ) VALUES (973128201,1, 1234);
+
+
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES (110 ,'IT',109);
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES ( 111,'Cybersecurity',110);
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES (112 ,'Sisteme de Operare',111);
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES ( 123,'Economie',122);
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES ( 131,'Programare 3D',130);
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES (145 ,'Sisteme de Operare',144);
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES (425 ,'Sisteme Informatice',424);
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES ( 124,'IT',123);
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES ( 533,'Inteligenta Artificiala',532);
+   INSERT INTO CUVINTECHEIE(CodCC, NumeCC, CodCCSuperior) VALUES ( 313,'Economie',312);
+
+     INSERT INTO VÂNZĂRI (ISBN, AN, LUNA,VÂNZĂRI ) VALUES (873828201,2010,5, 23000 );
+    INSERT INTO VÂNZĂRI (ISBN, AN, LUNA,VÂNZĂRI ) VALUES (38362801,2012,2, 23456 );
+    INSERT INTO VÂNZĂRI (ISBN, AN, LUNA,VÂNZĂRI ) VALUES (37362801,2020,10, 59675 );
+    INSERT INTO VÂNZĂRI (ISBN, AN, LUNA,VÂNZĂRI ) VALUES (973128201,2014,5, 67808 );
+    INSERT INTO VÂNZĂRI (ISBN, AN, LUNA,VÂNZĂRI ) VALUES (173628201,2015,8, 567000 );
+    INSERT INTO VÂNZĂRI (ISBN, AN, LUNA,VÂNZĂRI ) VALUES (57362801,2009,1, 67809 );
+    INSERT INTO VÂNZĂRI (ISBN, AN, LUNA,VÂNZĂRI ) VALUES (27362401,2006,7, 298680 );
+    INSERT INTO VÂNZĂRI (ISBN, AN, LUNA,VÂNZĂRI ) VALUES (173628201,2016,9, 12400 );
+    INSERT INTO VÂNZĂRI (ISBN, AN, LUNA,VÂNZĂRI ) VALUES (873828201,2019,4, 76507 );
+
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (873828201,313);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (173628201,313);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (57362801,533);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (873828201,124);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (37362801,111);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (173628201,110);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (973128201,131);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (973128201,425);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (173628201,123);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (27362401,112);
+    INSERT INTO CĂRȚICUVINTECHEIE (ISBN,CodCC) VALUES (27362111,145);
+
+
+	
+---------------------------------------------------------------------------
+
+	--1. Care autori români sunt "trecuţi" de 40 de ani ?
+       SELECT NumeAutor FROM AUTORI
+       WHERE DataNasterii <= '01.01.1983';
+       
+           1.1 In limbajul R, rezolvarea la interogarea 1 arata astfel:
+           	   library(dplyr)
+       		 result <- autori %>%
+     		filter(datanasterii <= "1983-01-01") %>%
+       		distinct(numeautor)		
+    	   	print(result)
+
+
+	3.select
+	   Titlu, NumeCC, AUTORI.NumeAutor
+	   from CĂRTI
+	inner join CĂRȚICUVINTECHEIE on CĂRTI.isbn = CĂRȚICUVINTECHEIE.isbn
+	inner join CUVINTECHEIE on CĂRȚICUVINTECHEIE.codcc = CUVINTECHEIE.codcc
+	inner join CĂRȚIAUTORI on CĂRTI.isbn=CĂRȚIAUTORI.isbn
+	inner join  AUTORI on CĂRȚIAUTORI.codautor = AUTORI.codautor
+	where NumeCC ='PostgresSQL CARTE'and UPPER (AUTORI.Țara) = UPPER('Romania');
+
+	3.2 In limbajul R, rezolvarea la interogarea 3 arata astfel:
+	
+	library(dplyr)
+	result <- cĂrti %>%
+	  inner_join(cĂrȚicuvintecheie, by = "isbn") %>%
+	  inner_join(cuvintecheie, by = "codcc") %>%
+ 	  inner_join(cĂrȚiautori, by = "isbn") %>%
+ 	  inner_join(autori, by = "codautor") %>%
+ 	 filter(numecc == 'PostgresSQL CARTE' & toupper(Țara) == toupper('Romania')) %>%
+         distinct(titlu, numecc, numeautor)
+	 print(result)
+
+
+ 	  4. 
+ 	select Titlu
+	from CĂRTI c 
+	inner join CĂRȚIAUTORI ca on c.isbn=ca.isbn
+	inner join AUTORI a on ca.codautor=a.codautor
+	where Țara ='Romania'
+	intersect
+	select Titlu 
+	from CĂRTI c 
+	inner join CĂRȚIAUTORI ca on c.isbn=ca.isbn
+	inner join AUTORI a on ca.codautor=a.codautor
+		where Țara !='Romania';
+
+	4.3 In limbajul R, rezolvarea la interogarea 4 arata astfel:
+		library(dplyr)
+	result <- cĂrti
+	  inner_join(cĂrȚiautori, by = "isbn") %>%
+ 	 inner_join(autori, by = "codautor") %>%
+  	  filter(Țara == 'Romania') %>%
+      distinct(titlu) %>%
+ 	 intersect
+ 	 cĂrti %>%
+    inner_join(cĂrȚiautori, by = "isbn") %>%
+    inner_join(autori, by = "codautor") %>%
+      filter(Țara != 'Romania') %>%
+        distinct(titlu)
+	print(result)
+----------------------------------------------------------------------------------
+
+	Noteeeeee:
+	--am modificat unele interogari pentru a rezolva corect exercitiile propuse. 
+	update CUVINTECHEIE
+	set NumeCC='IT'
+	where NumeCC='PostgresSQL Carte';
+	select * from  cuvintecheie
+
+	update CUVINTECHEIE
+	set NumeCC='PostgresSQL CARTE'
+	where NumeCC='Sisteme de Operare' and CodCC='145';
